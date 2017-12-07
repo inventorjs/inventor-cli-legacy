@@ -1,0 +1,25 @@
+{
+  "name": "inventor-cli",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "bin": {
+    "inventor-cli": "inventor.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/inventorjs/inventor-cli.git"
+  },
+  "author": "sunkeysun",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/inventorjs/inventor-cli/issues"
+  },
+  "homepage": "https://github.com/inventorjs/inventor-cli#readme",
+  "dependencies": {
+    "commander": "^2.12.2"
+  }
+}
