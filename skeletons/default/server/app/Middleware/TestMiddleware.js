@@ -6,4 +6,5 @@
 
 export default (ctx, next) => {
     console.log('testMiddleware')
+    next()
 }
