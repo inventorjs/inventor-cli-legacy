@@ -4,23 +4,31 @@
  * @author : sunkeysun
  */
 
-import IClass from '../Support/Base/IClass'
-import ioredis from 'ioredis'
+import IClass from '../../Support/Base/IClass'
+import RedisDriver from '../../Support/Drivers/RedisDriver'
+
+import { serialize, unserialize } from '../helpers'
 
 export default class RedisStore extends IClass {
+    _redis = null
+
     constructor(redisConfig) {
+        super()
 
+        this._redis = new RedisDriver(redisConfig)
     }
 
-    get(key, maxAge, { rolling }) {
-
+    async get(sid, maxAge, { rolling }) {
+        const data = await this._redis.get(sid)
+        const resultData = unserialize(data)
+        return resultData
     }
 
-    set(key, sess, maxAge, { rolling, changed }) {
-
+    async set(sid, sess, maxAge, { changed, rolling }) {
+        return await this._redis.set(sid, serialize(sess), 'EX', Math.floor(maxAge/1000))
     }
 
-    destroy(key) {
-
+    async destroy(sid) {
+        return await this._redis.del(sid)
     }
 }

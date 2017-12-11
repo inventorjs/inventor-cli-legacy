@@ -27,27 +27,27 @@ export default class Router extends IClass {
 
     get(...args) {
         args.unshift('get')
-        return this._handle.apply(this, args)
+        return Reflect.apply(this._handle, this, args)
     }
 
     post(...args) {
         args.unshift('post')
-        return this._handle.apply(this, args)
+        return Reflect.apply(this._handle, this, args)
     }
 
     put(...args) {
         args.unshift('put')
-        return this._handle.apply(this, args)
+        return Reflect.apply(this._handle, this, args)
     }
 
     delete(...args) {
         args.unshift('delete')
-        return this._handle.apply(this, args)
+        return Reflect.apply(this._handle, this, args)
     }
 
     patch(...args) {
         args.unshift('patch')
-        return this._handle.apply(this, args)
+        return Reflect.apply(this._handle, this, args)
     }
 
     group(prefix, handler, options) {

@@ -4,17 +4,22 @@
  * @author : sunkeysun
  */
 
-import
+import path from 'path'
 
 export default {
     driver: 'log4js',
     config: {
         log4js: {
             appenders: {
-                type: 'dateFile',
-                filename: path.join(__dirname, '../logs/', 'log'),
-                absolute: true,
-                pattern: 'yyyy-MM-dd-hh',
+                console: {
+                    type: 'console',
+                },
+                dateFile: {
+                    type: 'dateFile',
+                    filename: path.join(__dirname, '../../logs/'),
+                    alwaysIncludePattern: true,
+                    pattern: 'yyyy_MM_dd_hh.log',
+                }
             },
             categories: {
                 default: { appenders: ['dateFile'], level: 'debug' },

@@ -98,8 +98,8 @@ export default class Application extends IClass {
     }
 
     _registerBaseProvider() {
-        // this._registerLogProvider()
-        // this._registerRedisProvider()
+        this._registerLogProvider()
+        this._registerRedisProvider()
         this._registerSessionProvider()
         this._registerRoutingProvider()
     }

@@ -5,103 +5,27 @@
  */
 
 import IClass from '../Support/Base/IClass'
+import { extendObject } from '../Support/helpers'
 
 export default class Request extends IClass {
-    _proxyProps = [
-        'headers',
-        'method',
-        'url',
-        'originalUrl',
-        'origin',
-        'href',
-        'path',
-        'query',
-        'querystring',
-        'host',
-        'hostname',
-        'fresh',
-        'stale',
-        'socket',
-        'protocol',
-        'secure',
-        'ip',
-        'ips',
-        'subdomains',
-    ]
-
-    _proxyFuns = [
-        'is',
-        'accepts',
-        'acceptsEncodings',
-        'acceptsCharsets',
-        'acceptsLanguages',
-    ]
-
-    _extendProps = [
-        'params',
-        'cookies',
-        'session',
-    ]
-
-    _extendFuns = [
-        'header',
-        'cookie',
-    ]
-
     _ctx = null
+
+    _setters = []
 
     constructor(ctx) {
         super()
 
         this._ctx = ctx
-        const proxy = this._getProxy()
 
-        return proxy
+        const resultObj = extendObject(ctx.request, this, this._setters)
+        return resultObj
     }
 
-    header(name) {
+    getHeader(name) {
         return this._ctx.request.get(name)
     }
 
-    cookie(key) {
+    getCookie(key) {
         return this._ctx.cookies.get(key)
-    }
-
-    cookies() {
-        return {}
-    }
-
-    get params() {
-        return this._ctx.params
-    }
-
-    get session() {
-        return this._ctx.session
-    }
-
-    _getProxy() {
-        const req = this._ctx.request
-
-        const proxyHandler = {
-            get: (target, prop) => {
-                if (!!~this._extendFuns.indexOf(prop)) {
-                    return (...args) => {
-                        return this[prop].apply(this, args)
-                    }
-                } else if (!!~this._extendProps.indexOf(prop)) {
-                    return this[prop]
-                } else if (!!~this._proxyFuns.indexOf(prop)) {
-                    return (...args) => {
-                        return Reflect.apply(target[prop], target, args)
-                    }
-                } else if (!!~this._proxyProps.indexOf(prop)) {
-                    return target[prop]
-                } else {
-                    throw new IException(`${prop} not exists.`)
-                }
-            }
-        }
-
-        return new Proxy(req, proxyHandler)
     }
 }

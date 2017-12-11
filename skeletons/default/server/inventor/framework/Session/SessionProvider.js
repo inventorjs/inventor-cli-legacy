@@ -6,6 +6,7 @@
 
 import Provider from '../Support/Base/Provider'
 import session from 'koa-session'
+import RedisStore from './Stores/RedisStore'
 
 export default class SessionProvider extends Provider {
     register() {
@@ -13,7 +14,7 @@ export default class SessionProvider extends Provider {
         let store = null
         switch (sessionConfig.store) {
             case 'redis':
-                const redisConfig = _.get(sessionConfig, 'storeConfig.redis')
+                const redisConfig = _.get(sessionConfig, 'config.redis')
                 store = new RedisStore(redisConfig)
                 break
             default:
@@ -22,7 +23,7 @@ export default class SessionProvider extends Provider {
         }
 
         let targetConfig = _.pick(sessionConfig, ['key', 'maxAge', 'overwrite',
-                                                'httpOnly', 'signed', 'rolling'])
+                                                'httpOnly', 'signed', 'rolling', 'decode', 'encode'])
         if (!!store) {
             targetConfig = _.extend(targetConfig, { store })
         }

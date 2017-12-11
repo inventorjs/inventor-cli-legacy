@@ -5,16 +5,17 @@
  */
 
 export default {
-    store: 'cookie',
+    store: 'redis',
     key: 'NODESESS',
     maxAge: 86400 * 1000,
     httpOnly: true,
     overwrite: false,
     signed: true,
+    rolling: true,
 
-    storeConfig: {
+    config: {
         redis: {
-            mode: 'cluster',    // cluster | single
+            mode: 'single',    // cluster | single
             servers: [
                 {
                     host: '127.0.0.1',

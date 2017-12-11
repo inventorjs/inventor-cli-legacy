@@ -3,110 +3,62 @@
  *
  * @author : sunkeysun
  */
+import React from 'react'
+import { renderToStaticMarkup } from 'react-dom/server'
 
 import IClass from '../Support/Base/IClass'
+import { extendObject } from '../Support/helpers'
+import HTML from '@server/views/common/HTML'
 
 export default class Response extends IClass {
-    _proxyProps = [
-        'body',
-        'status',
-        'message',
-        'length',
-        'type',
-        'lastModified',
-        'etag',
-    ]
-
-    _proxyFuns = [
-        'headerSent',
-        'redirect',
-        'attachment',
-        'append',
-        'remove',
-    ]
-
-    _extendFuns = [
-        'header',
-        'headers',
-        'cookie',
-        'cookies',
-        'send',
-    ]
-
     _ctx = null
+
+    _setters = [
+    ]
 
     constructor(ctx) {
         super()
 
         this._ctx = ctx
-        const proxy = this._getProxy()
 
-        return proxy
+        const resultObj = extendObject(ctx.response, this, this._setters)
+        return resultObj
     }
 
-    header(name, value) {
-        this._ctx.response.set(name, value)
+    setHeader(field, value) {
+        return this._ctx.response.set(field, value)
     }
 
-    headers(headers) {
-        _.each(headers, (val, key) => {
-            this._ctx.response.set(key, val)
-        })
+    removeHeader(field) {
+        return this._ctx.response.remove(field)
     }
 
-    cookie(key, value, options={}) {
-        this._ctx.cookies.set(key, value, options)
+    setCookie(key, value, options={}) {
+        return this._ctx.cookies.set(key, value, options)
     }
 
-    cookies(cookies) {
-        _.each(cookies, ({ key, val, options }) => {
-            this._ctx.cookies.set(key, val, options)
-        })
-    }
-
-    json(data) {
-        this.header('content-type', 'application/json')
+    sendJson(data) {
+        this.setHeader('content-type', 'application/json')
 
         const result = JSON.stringify(data)
-        this.body = result
+        this._ctx.response.body = result
     }
 
-    jsonp(data, callback='') {
+    sendJsonp(data, callback='') {
         const cb = _.get(this._ctx.request.query, 'callback', callback)
         const jsonData = JSON.stringify(data)
         const result = `${cb}(${jsonData})`
 
         this.header('content-type', 'application/javascript')
-        this.body = result
+        this._ctx.response.body = result
     }
 
-    _getProxy() {
-        const res = this._ctx.response
-        const proxyHandler = {
-            get: (target, prop) => {
-                if (!!~this._extendFuns.indexOf(prop)) {
-                    return (...args) => {
-                        return this[prop].apply(this, args)
-                    }
-                } else if (!!~this._proxyFuns.indexOf(prop)) {
-                    return (...args) => {
-                        return Reflect.apply(target[prop], target, args)
-                    }
-                } else {
-                    throw new IException(`${prop} not exists.`)
-                }
-            },
-            set: (target, prop, value) => {
-                if (!!~this._proxyProps.indexOf(prop)) {
-                    return target[prop] = value
-                } else if (!!~this._extendProps.indexOf(prop)) {
-                    return this[prop]
-                } else {
-                    throw new IException(`${prop} not exists.`)
-                }
-            }
-        }
+    send(data) {
+        this._ctx.response.body = data
+    }
 
-        return new Proxy(res, proxyHandler)
+    render() {
+        this.setHeader('content-type', 'text/html')
+        this.send(renderToStaticMarkup(<HTML />))
     }
 }

@@ -8,13 +8,9 @@ import { Controller } from 'inventor'
 
 export default class TestController extends Controller {
     test() {
-        this.response.header('hello', 'world')
-        this.response.status = 500
-        this.response.body = 'te123'
+        this.response.render()
     }
 
     test123() {
-        this.request.session.visit = Date.now()
-        this.response.body = this.request.session
     }
 }

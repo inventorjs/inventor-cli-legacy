@@ -5,7 +5,7 @@
  */
 
 export default {
-    mode: 'cluster',    // cluster | single
+    mode: 'single',    // cluster | single
     servers: [
         {
             host: '127.0.0.1',
