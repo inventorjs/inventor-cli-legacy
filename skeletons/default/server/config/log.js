@@ -18,7 +18,7 @@ export default {
                     type: 'dateFile',
                     filename: path.join(__dirname, '../../logs/'),
                     alwaysIncludePattern: true,
-                    pattern: 'yyyy_MM_dd_hh.log',
+                    pattern: 'yyyyMMddhh.log',
                 }
             },
             categories: {

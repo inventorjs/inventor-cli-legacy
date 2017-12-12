@@ -1,14 +1,15 @@
 /**
- * 基础模型类
+ * 基础驱动类
  *
  * @author : sunkeysun
  */
 
 import IClass from './IClass'
 
-export default class Model extends IClass {
+export default class Driver extends IClass {
     constructor() {
         super()
-        this.logger = app().logger('model')
+
+        this.logger = app().logger('driver')
     }
 }

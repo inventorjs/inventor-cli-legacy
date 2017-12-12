@@ -24,3 +24,23 @@ export function extendObject(obj, me, setters=[]) {
 
     return proxy
 }
+
+export function config(configName) {
+    const configPath = app().configPath + configName
+    const env = app().env
+
+    const envConfigPath = `${configPath}${env}/${configName}`
+    let configModule = null
+
+    try {
+        configModule = require(envConfigPath)
+    } catch (err) {
+        configModule = require(configPath)
+    }
+
+    if (!_.isUndefined(configModule.default)) {
+        configModule = configModule.default
+    }
+
+    return configModule
+}

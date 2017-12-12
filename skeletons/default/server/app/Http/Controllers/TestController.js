@@ -8,9 +8,6 @@ import { Controller } from 'inventor'
 
 export default class TestController extends Controller {
     test() {
-        this.response.render()
-    }
-
-    test123() {
+        return this.response.render('test')
     }
 }

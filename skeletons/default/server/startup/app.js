@@ -5,8 +5,7 @@
  */
 
 import path from 'path'
-import Application from '../inventor'
+import Kernel from '@server/app/Http/Kernel'
 
-const app = new Application(path.join(__dirname, '../'))
-
+const app = new Kernel(path.join(__dirname, '../../'))
 app.run()

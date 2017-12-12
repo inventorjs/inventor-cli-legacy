@@ -6,8 +6,15 @@
 
 import IClass from './IClass'
 
-export default class ServiceProvider extends IClass {
+export default class Provider extends IClass {
+    constructor() {
+        super()
+
+        if (!!_.isFunction(app().logger)) {
+            this.logger = app().logger('provider')
+        }
+    }
+
     register() {
-        throw new IException('servicer provider must implement register function')
     }
 }

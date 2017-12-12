@@ -4,11 +4,11 @@
  * @author : sunkeysun
  */
 import React from 'react'
-import { renderToStaticMarkup } from 'react-dom/server'
+import { renderToStaticMarkup, renderToString } from 'react-dom/server'
 
 import IClass from '../Support/Base/IClass'
 import { extendObject } from '../Support/helpers'
-import HTML from '@server/views/common/HTML'
+import HTML from '@server/views/HTML'
 
 export default class Response extends IClass {
     _ctx = null
@@ -57,8 +57,24 @@ export default class Response extends IClass {
         this._ctx.response.body = data
     }
 
-    render() {
+    _getAppComponent(appName) {
+        const appPath = `${app().sharedPath}apps/${appName}/App`
+        const AppComponent = require(appPath).default
+        return AppComponent
+    }
+
+    render(appName, initialState) {
         this.setHeader('content-type', 'text/html')
-        this.send(renderToStaticMarkup(<HTML />))
+        const props = {
+            title: '页面标题',
+            keywords: '页面关键词',
+            description: '页面描述',
+            css: [],
+            js: [],
+            initialState: {xxx:1},
+            appName: appName,
+            AppComponent: this._getAppComponent(appName),
+        }
+        this.send(renderToStaticMarkup(<HTML { ...props } />))
     }
 }

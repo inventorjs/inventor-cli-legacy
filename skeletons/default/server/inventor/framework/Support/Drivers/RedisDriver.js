@@ -6,9 +6,9 @@
 
 import Redis from 'ioredis'
 
-import IClass from '../Base/IClass'
+import Driver from '../Base/Driver'
 
-export default class RedisDriver extends IClass {
+export default class RedisDriver extends Driver {
     _redis = null
 
     constructor(redisConfig) {
@@ -21,13 +21,13 @@ export default class RedisDriver extends IClass {
         }
 
         this._redis.on('connect', () => {
-            app().logger().debug('redis connect')
+            this.logger.debug('redis connect')
         })
         this._redis.on('ready', () => {
-            app().logger().debug('redis ready')
+            this.logger.debug('redis ready')
         })
         this._redis.on('error', (err) => {
-            app().logger().debug(err)
+            this.logger.debug(err)
         })
     }
 

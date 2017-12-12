@@ -14,5 +14,6 @@ export default class Controller extends IClass{
 
         this.request = new Request(ctx)
         this.response = new Response(ctx)
+        this.logger = app().logger('controller')
     }
 }

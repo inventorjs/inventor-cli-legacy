@@ -4,5 +4,10 @@
  * @author : sunkeysun
  */
 
-export default class IException {
+export default class IException extends Error {
+    constructor() {
+        super()
+
+        this.logger = app().logger('exception')
+    }
 }

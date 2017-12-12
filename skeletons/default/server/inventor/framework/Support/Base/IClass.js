@@ -5,6 +5,9 @@
  */
 
 export default class IClass {
-    constructor() {
+    constructor({ logger } = { logger : true}) {
+        if (!!_.isFunction(app().logger)) {
+            this.logger = app().logger()
+        }
     }
 }

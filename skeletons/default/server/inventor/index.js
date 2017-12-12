@@ -4,12 +4,12 @@
  * @author : sunkeysun
  */
 
-import Application from './framework/Http/Application'
-
-export default Application
-
+import HttpKernel from './framework/Http/Kernel'
+import WebKernel from './framework/Web/Kernel'
 import Controller from './framework/Http/Controller'
 
 export {
+    HttpKernel,
+    WebKernel,
     Controller,
 }

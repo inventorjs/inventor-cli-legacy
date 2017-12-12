@@ -26,6 +26,7 @@
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
     "commander": "^2.12.2",
+    "core-decorators": "^0.20.0",
     "ioredis": "^3.2.2",
     "koa": "^2.4.1",
     "koa-router": "^7.3.0",
