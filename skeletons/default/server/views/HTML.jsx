@@ -12,9 +12,8 @@ export default function(props={}) {
         title='',
         keywords='',
         description='',
-        css=[],
-        js=[],
-        body='',
+        cssList=[],
+        jsList=[],
         initialState={},
         appName='',
         AppComponent=null,
@@ -31,7 +30,7 @@ export default function(props={}) {
                 <meta httpEquiv="description" content={ description } />
                 <title>{ title }</title>
                 {
-                    _.map(css, (link) =>
+                    _.map(cssList, (link) =>
                         <link href={ link } rel="stylesheet" media="screen" />
                     )
                 }
@@ -48,7 +47,7 @@ export default function(props={}) {
             } }></div>
 
             {
-                _.map(js, (script) =>
+                _.map(jsList, (script) =>
                     <script type="text/javascript" src={ script }></script>
                 )
             }

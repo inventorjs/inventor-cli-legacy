@@ -8,6 +8,6 @@
                 "@shared": "./shared"
             }
         }],
-	"transform-decorators-legacy"
+	   "transform-decorators-legacy"
     ]
 }

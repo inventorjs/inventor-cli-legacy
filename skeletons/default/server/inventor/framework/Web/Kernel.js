@@ -10,21 +10,11 @@ import ReactDom from 'react-dom'
 import IException from '../Support/Base/IException'
 
 export default class Kernel {
-    _basePath = ''
+    _AppComponent = null
 
-    constructor(basePath) {
-        this._basePath = basePath
-
+    constructor(_AppComponent) {
+        this._AppComponent = AppComponent
         this._registerGlobal()
-    }
-
-    get basePath() {
-        return this._basePath
-    }
-
-    get sharedPath() {
-        const targetPath = `${this.basePath}/shared/`
-        return targetPath
     }
 
     _registerGlobal() {
@@ -39,19 +29,10 @@ export default class Kernel {
         })
     }
 
-    _getEntryComponent(entryName) {
-        const componentPath = `${this.sharedPath}/apps/${entryName}`
-        const entryComponent = require(componentPath).default
-
-        return entryComponent
-    }
-
     run() {
         const initialState = global.__INITIAL_STATE__
-        const moduleName = global.__MODULE_NAME__
-        const App = this._getEntryComponent(moduleName)
-        const entryComponent = react.createElement(App, initialState)
+        const app = react.createElement(this._AppComponent, initialState)
 
-        return ReactDom.render(entryComponent, document.body)
+        return ReactDom.render(app, document.getElementById('__APP__'))
     }
 }

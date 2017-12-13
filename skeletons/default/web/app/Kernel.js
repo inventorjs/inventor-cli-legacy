@@ -4,7 +4,7 @@
  * @author : sunkeysun
  */
 
-import WebKernel from 'inventor'
+import WebKernel from '../../server/inventor/framework/Web/Kernel'
 
 export default class Kernel extends WebKernel {
 }
