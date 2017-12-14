@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/inventorjs/inventor-cli#readme",
   "dependencies": {
+    "axios": "^0.17.1",
     "babel": "^6.23.0",
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
@@ -38,6 +39,9 @@
     "log4js": "^2.3.12",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
+    "react-redux": "^5.0.6",
+    "react-router": "^4.2.0",
+    "redux": "^3.7.2",
     "webpack": "^3.10.0"
   }
 }
