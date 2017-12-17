@@ -4,7 +4,7 @@
  * @author : sunkeysun
  */
 
-import lodash from 'lodash'
+import lodash from '@vendor/lodash/lodash.custom'
 import CoreApp from 'koa'
 
 import IException from '../Support/Base/IException'
@@ -60,6 +60,16 @@ export default class Kernel {
 
     get sharedPath() {
         const targetPath = `${this._basePath}shared/`
+        return targetPath
+    }
+
+    get serverPath() {
+        const targetPath = `${this._basePath}server/`
+        return targetPath
+    }
+
+    get viewsPath() {
+        const targetPath = `${this.serverPath}views/`
         return targetPath
     }
 

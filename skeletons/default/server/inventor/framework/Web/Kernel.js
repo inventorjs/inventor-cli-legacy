@@ -4,15 +4,18 @@
  * @author : sunkeysun
  */
 
-import lodash from 'lodash'
+import lodash from '@vendor/lodash/lodash.custom'
 import React, { Component } from 'react'
 import ReactDom from 'react-dom'
 import IException from '../Support/Base/IException'
+import createRoot from '../Shared/webRoot.jsx'
 
 export default class Kernel {
+    _basePath = ''
     _AppComponent = null
 
-    constructor(_AppComponent) {
+    constructor(basePath, AppComponent) {
+        this._basePath = basePath
         this._AppComponent = AppComponent
         this._registerGlobal()
     }
@@ -29,10 +32,22 @@ export default class Kernel {
         })
     }
 
+    get sharedPath() {
+        const targetPath = `${this._basePath}shared`
+        return targetPath
+    }
+
     run() {
         const initialState = global.__INITIAL_STATE__
-        const app = react.createElement(this._AppComponent, initialState)
+        const App = this._AppComponent
 
-        return ReactDom.render(app, document.getElementById('__APP__'))
+        const appName = global.__APP_NAME__
+        const appPath = `${this.sharedPath}apps/${appName}/`
+        const rootReducer = require(`${appPath}reducers`).default
+        const rootSaga = require(`${appPath}sagas`).default
+
+        const RootComponent = createRoot({ App, rootReducer, rootSaga })
+
+        return ReactDom.render(RootComponent, document.getElementById('__APP__'))
     }
 }

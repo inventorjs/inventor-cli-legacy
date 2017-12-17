@@ -5,7 +5,9 @@
             "alias": {
                 "inventor": "./server/inventor",
                 "@server": "./server",
-                "@shared": "./shared"
+                "@shared": "./shared",
+                "@vendor": "./vendor",
+                "lodash": "./vendor/lodash/lodash.custom"
             }
         }],
 	   "transform-decorators-legacy"

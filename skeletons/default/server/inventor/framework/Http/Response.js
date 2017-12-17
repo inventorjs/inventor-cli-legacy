@@ -8,13 +8,20 @@ import { renderToStaticMarkup, renderToString } from 'react-dom/server'
 
 import IClass from '../Support/Base/IClass'
 import { extendObject } from '../Support/helpers'
-import HTML from '@server/views/HTML'
+import HTML from '../Shared/HTML'
+import createRoot from '../Shared/serverRoot.jsx'
 
 export default class Response extends IClass {
     _ctx = null
 
     _setters = [
     ]
+
+    _locals = {}
+
+    get locals() {
+        return this._locals
+    }
 
     constructor(ctx) {
         super()
@@ -50,31 +57,58 @@ export default class Response extends IClass {
         const result = `${cb}(${jsonData})`
 
         this.header('content-type', 'application/javascript')
-        this._ctx.response.body = result
+        return this._ctx.response.body = result
     }
 
     send(data) {
-        this._ctx.response.body = data
+        return this._ctx.response.body = data
     }
 
-    _getAppComponent(appName) {
-        const appPath = `${app().sharedPath}apps/${appName}/App`
-        const AppComponent = require(appPath).default
-        return AppComponent
+    render404() {
+        return this.renderError(404)
     }
 
-    render(appName, initialState) {
-        this.setHeader('content-type', 'text/html')
+    render500() {
+        return this.renderError(500)
+    }
+
+    render403() {
+        return this.renderError(403)
+    }
+
+    renderError(code, initialState={}) {
+        const appPath = `${app().sharedPath}common/errors/${code}`
+        const App = require(appPath).default
+        const appName = 'common'
+
+        return this._render({ App, appName, initialState })
+    }
+
+    _render({ App, appName='', initialState={}, rootReducer=()=>{}, rootSaga={} }) {
+        const RootComponent = createRoot({ App, rootReducer, rootSaga })
+        const appContent = renderToString(<RootComponent { ...initialState } />)
+
         const props = {
-            title: '页面标题',
-            keywords: '页面关键词',
-            description: '页面描述',
-            css: [],
-            js: [],
-            initialState: {xxx:1},
+            title: _.get(this.locals, 'PAGE_TITLE', ''),
+            keywords: _.get(this.locals, 'PAGE_KEYWORDS', ''),
+            description: _.get(this.locals, 'PAGE_DESCRIPTION', ''),
+            initialState: initialState,
             appName: appName,
-            AppComponent: this._getAppComponent(appName),
+            appContent: appContent,
+            viewsPath: app().viewsPath,
         }
-        this.send(renderToStaticMarkup(<HTML { ...props } />))
+        return this.send(renderToStaticMarkup(<HTML { ...props } />))
+    }
+
+    render(appName, initialState={}) {
+        this.setHeader('content-type', 'text/html')
+
+        const appPath = `${app().sharedPath}apps/${appName}/`
+        const App = require(`${appPath}App`).default
+
+        const rootReducer = require(`${appPath}reducers`).default
+        const rootSaga = require(`${appPath}sagas`).default
+
+        return this._render({ App, appName, rootReducer, rootSaga })
     }
 }

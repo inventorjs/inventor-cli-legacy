@@ -4,10 +4,10 @@
  * @author : sunkeysun
  */
 
-module.export = {
+export default {
+    common: {
+    },
     test: {
-        open: true,
-        entry: '@web/startup/app.js',
-        view: '@server/views/apps/test/addon/js.jsx',
-    }
+        build: true,
+    },
 }
