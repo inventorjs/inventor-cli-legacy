@@ -17,8 +17,12 @@ export default function(props={}) {
         viewsPath='',
     } = props
 
-    const { commonJsList=[], commonCssList=[] } = require(`${viewsPath}/common`)
-    const { jsList=[], cssList=[] } = require(`${viewsPath}/apps/${appName}`)
+    const { jsList: vendorJsList=[], cssList: vendorCssList=[] } = require(`${viewsPath}vendor`)
+    const { jsList: commonJsList=[], cssList: commonCssList=[] } = require(`${viewsPath}common`)
+    const { jsList=[], cssList=[] } = require(`${viewsPath}apps/${appName}`)
+
+    const realJsList = vendorJsList.concat(commonJsList).concat(jsList)
+    const realCssList = vendorCssList.concat(commonCssList).concat(cssList)
 
     const jsonInitialState = JSON.stringify(initialState)
 
@@ -31,12 +35,7 @@ export default function(props={}) {
                 <meta httpEquiv="description" content={ description } />
                 <title>{ title }</title>
                 {
-                    _.map(commonCssList, (link) =>
-                        <link href={ link } rel="stylesheet" media="screen" />
-                    )
-                }
-                {
-                    _.map(cssList, (link) =>
+                    _.map(realCssList, (link) =>
                         <link href={ link } rel="stylesheet" media="screen" />
                     )
                 }
@@ -52,12 +51,7 @@ export default function(props={}) {
                 __html: appContent
             } }></div>
             {
-                _.map(commonJsList, (js, index) =>
-                    <script key={ index } type="text/javascript" src={ js }></script>
-                )
-            }
-            {
-                _.map(jsList, (js, index) =>
+                _.map(realJsList, (js, index) =>
                     <script key={ index } type="text/javascript" src={ js }></script>
                 )
             }

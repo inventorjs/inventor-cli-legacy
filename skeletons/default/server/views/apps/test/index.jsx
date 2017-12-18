@@ -1,1 +1,1 @@
-export * from './addon/assets'
+export * from './assets'

@@ -6,7 +6,7 @@
 
 import React, { Component } from 'react'
 import { Provider } from 'react-redux'
-import { Router, Route, browserHistory } from 'react-router'
+import { BrowserRouter } from 'react-router-dom'
 
 import configureStore from './store/configureStore'
 
@@ -16,9 +16,9 @@ export default ({ App, rootReducer=()=>{}, rootSaga={} }) => {
 
         return (
             <Provider store={ store }>
-                <Router history={ browserHistory } >
+                <BrowserRouter>
                     <App />
-                </Router>
+                </BrowserRouter>
             </Provider>
         )
     }

@@ -12,8 +12,6 @@ export default class TestController extends Controller {
         this.response.locals.PAGE_KEYWORDS = '我的关键词'
         this.response.locals.PAGE_DESCRIPTION = '我的描述'
 
-        // return this.response.render('test')
-
-        return this.response.render404()
+        return this.response.render('test')
     }
 }

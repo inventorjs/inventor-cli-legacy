@@ -20,6 +20,8 @@
   },
   "homepage": "https://github.com/inventorjs/inventor-cli#readme",
   "dependencies": {
+    "antd": "^3.0.2",
+    "autoprefixer": "^7.2.3",
     "axios": "^0.17.1",
     "babel": "^6.23.0",
     "babel-core": "^6.26.0",
@@ -32,11 +34,15 @@
     "babel-preset-stage-0": "^6.24.1",
     "commander": "^2.12.2",
     "core-decorators": "^0.20.0",
+    "css-loader": "^0.28.7",
     "ioredis": "^3.2.2",
     "koa": "^2.4.1",
     "koa-router": "^7.3.0",
     "koa-session": "^5.5.1",
+    "less": "^2.7.3",
+    "less-loader": "^4.0.5",
     "log4js": "^2.3.12",
+    "postcss-loader": "^2.0.9",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-redux": "^5.0.6",
@@ -45,7 +51,7 @@
     "react-router-dom": "^4.2.2",
     "redux": "^3.7.2",
     "redux-saga": "^0.16.0",
-    "redux-thunk": "^2.2.0"
+    "style-loader": "^0.19.1"
   },
   "devDependencies": {
     "clean-webpack-plugin": "^0.1.17",

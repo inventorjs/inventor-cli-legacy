@@ -5,8 +5,6 @@
  */
 
 export default {
-    common: {
-    },
     test: {
         build: true,
     },

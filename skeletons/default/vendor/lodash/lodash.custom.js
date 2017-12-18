@@ -1,7 +1,7 @@
 /**
  * @license
  * Lodash (Custom Build) <https://lodash.com/>
- * Build: `lodash core plus="get"`
+ * Build: `lodash core plus="get,range,partial,mapValues,uniq" -o vendor/lodash/lodash.custom.js`
  * Copyright JS Foundation and other contributors <https://js.foundation/>
  * Released under MIT license <https://lodash.com/license>
  * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
@@ -398,6 +398,27 @@
   function arrayIncludes(array, value) {
     var length = array == null ? 0 : array.length;
     return !!length && baseIndexOf(array, value, 0) > -1;
+  }
+
+  /**
+   * This function is like `arrayIncludes` except that it accepts a comparator.
+   *
+   * @private
+   * @param {Array} [array] The array to inspect.
+   * @param {*} target The value to search for.
+   * @param {Function} comparator The comparator invoked per element.
+   * @returns {boolean} Returns `true` if `target` is found, else `false`.
+   */
+  function arrayIncludesWith(array, value, comparator) {
+    var index = -1,
+        length = array == null ? 0 : array.length;
+
+    while (++index < length) {
+      if (comparator(value, array[index])) {
+        return true;
+      }
+    }
+    return false;
   }
 
   /**
@@ -962,7 +983,8 @@
   }());
 
   /* Built-in method references for those with the same name as other `lodash` methods. */
-  var nativeGetSymbols = Object.getOwnPropertySymbols,
+  var nativeCeil = Math.ceil,
+      nativeGetSymbols = Object.getOwnPropertySymbols,
       nativeIsBuffer = Buffer ? Buffer.isBuffer : undefined,
       nativeIsFinite = root.isFinite,
       nativeKeys = overArg(Object.keys, Object),
@@ -2686,6 +2708,29 @@
   }
 
   /**
+   * The base implementation of `_.range` and `_.rangeRight` which doesn't
+   * coerce arguments.
+   *
+   * @private
+   * @param {number} start The start of the range.
+   * @param {number} end The end of the range.
+   * @param {number} step The value to increment or decrement by.
+   * @param {boolean} [fromRight] Specify iterating from right to left.
+   * @returns {Array} Returns the range of numbers.
+   */
+  function baseRange(start, end, step, fromRight) {
+    var index = -1,
+        length = nativeMax(nativeCeil((end - start) / (step || 1)), 0),
+        result = Array(length);
+
+    while (length--) {
+      result[fromRight ? length : ++index] = start;
+      start += step;
+    }
+    return result;
+  }
+
+  /**
    * The base implementation of `_.rest` which doesn't validate or coerce arguments.
    *
    * @private
@@ -2838,6 +2883,67 @@
     }
     var result = (value + '');
     return (result == '0' && (1 / value) == -INFINITY) ? '-0' : result;
+  }
+
+  /**
+   * The base implementation of `_.uniqBy` without support for iteratee shorthands.
+   *
+   * @private
+   * @param {Array} array The array to inspect.
+   * @param {Function} [iteratee] The iteratee invoked per element.
+   * @param {Function} [comparator] The comparator invoked per element.
+   * @returns {Array} Returns the new duplicate free array.
+   */
+  function baseUniq(array, iteratee, comparator) {
+    var index = -1,
+        includes = arrayIncludes,
+        length = array.length,
+        isCommon = true,
+        result = [],
+        seen = result;
+
+    if (comparator) {
+      isCommon = false;
+      includes = arrayIncludesWith;
+    }
+    else if (length >= LARGE_ARRAY_SIZE) {
+      var set = iteratee ? null : createSet(array);
+      if (set) {
+        return setToArray(set);
+      }
+      isCommon = false;
+      includes = cacheHas;
+      seen = new SetCache;
+    }
+    else {
+      seen = iteratee ? [] : result;
+    }
+    outer:
+    while (++index < length) {
+      var value = array[index],
+          computed = iteratee ? iteratee(value) : value;
+
+      value = (comparator || value !== 0) ? value : 0;
+      if (isCommon && computed === computed) {
+        var seenIndex = seen.length;
+        while (seenIndex--) {
+          if (seen[seenIndex] === computed) {
+            continue outer;
+          }
+        }
+        if (iteratee) {
+          seen.push(computed);
+        }
+        result.push(value);
+      }
+      else if (!includes(seen, computed, comparator)) {
+        if (seen !== result) {
+          seen.push(computed);
+        }
+        result.push(value);
+      }
+    }
+    return result;
   }
 
   /**
@@ -3521,6 +3627,31 @@
   }
 
   /**
+   * Creates a `_.range` or `_.rangeRight` function.
+   *
+   * @private
+   * @param {boolean} [fromRight] Specify iterating from right to left.
+   * @returns {Function} Returns the new range function.
+   */
+  function createRange(fromRight) {
+    return function(start, end, step) {
+      if (step && typeof step != 'number' && isIterateeCall(start, end, step)) {
+        end = step = undefined;
+      }
+      // Ensure the sign of `-0` is preserved.
+      start = toFinite(start);
+      if (end === undefined) {
+        end = start;
+        start = 0;
+      } else {
+        end = toFinite(end);
+      }
+      step = step === undefined ? (start < end ? 1 : -1) : toFinite(step);
+      return baseRange(start, end, step, fromRight);
+    };
+  }
+
+  /**
    * Creates a function that wraps `func` to continue currying.
    *
    * @private
@@ -3562,6 +3693,17 @@
     result.placeholder = placeholder;
     return setWrapToString(result, func, bitmask);
   }
+
+  /**
+   * Creates a set object of `values`.
+   *
+   * @private
+   * @param {Array} values The values to add to the set.
+   * @returns {Object} Returns the new set.
+   */
+  var createSet = !(Set && (1 / setToArray(new Set([,-0]))[1]) == INFINITY) ? noop : function(values) {
+    return new Set(values);
+  };
 
   /**
    * Creates a function that either curries or invokes `func` with optional
@@ -5083,6 +5225,28 @@
     return baseSlice(array, start, end);
   }
 
+  /**
+   * Creates a duplicate-free version of an array, using
+   * [`SameValueZero`](http://ecma-international.org/ecma-262/7.0/#sec-samevaluezero)
+   * for equality comparisons, in which only the first occurrence of each element
+   * is kept. The order of result values is determined by the order they occur
+   * in the array.
+   *
+   * @static
+   * @memberOf _
+   * @since 0.1.0
+   * @category Array
+   * @param {Array} array The array to inspect.
+   * @returns {Array} Returns the new duplicate free array.
+   * @example
+   *
+   * _.uniq([2, 1, 2]);
+   * // => [2, 1]
+   */
+  function uniq(array) {
+    return (array && array.length) ? baseUniq(array) : [];
+  }
+
   /*------------------------------------------------------------------------*/
 
   /**
@@ -6057,6 +6221,44 @@
   function once(func) {
     return before(2, func);
   }
+
+  /**
+   * Creates a function that invokes `func` with `partials` prepended to the
+   * arguments it receives. This method is like `_.bind` except it does **not**
+   * alter the `this` binding.
+   *
+   * The `_.partial.placeholder` value, which defaults to `_` in monolithic
+   * builds, may be used as a placeholder for partially applied arguments.
+   *
+   * **Note:** This method doesn't set the "length" property of partially
+   * applied functions.
+   *
+   * @static
+   * @memberOf _
+   * @since 0.2.0
+   * @category Function
+   * @param {Function} func The function to partially apply arguments to.
+   * @param {...*} [partials] The arguments to be partially applied.
+   * @returns {Function} Returns the new partially applied function.
+   * @example
+   *
+   * function greet(greeting, name) {
+   *   return greeting + ' ' + name;
+   * }
+   *
+   * var sayHelloTo = _.partial(greet, 'hello');
+   * sayHelloTo('fred');
+   * // => 'hello fred'
+   *
+   * // Partially applied with placeholders.
+   * var greetFred = _.partial(greet, _, 'fred');
+   * greetFred('hi');
+   * // => 'hi fred'
+   */
+  var partial = baseRest(function(func, partials) {
+    var holders = replaceHolders(partials, getHolder(partial));
+    return createWrap(func, WRAP_PARTIAL_FLAG, undefined, partials, holders);
+  });
 
   /*------------------------------------------------------------------------*/
 
@@ -7150,6 +7352,44 @@
   }
 
   /**
+   * Creates an object with the same keys as `object` and values generated
+   * by running each own enumerable string keyed property of `object` thru
+   * `iteratee`. The iteratee is invoked with three arguments:
+   * (value, key, object).
+   *
+   * @static
+   * @memberOf _
+   * @since 2.4.0
+   * @category Object
+   * @param {Object} object The object to iterate over.
+   * @param {Function} [iteratee=_.identity] The function invoked per iteration.
+   * @returns {Object} Returns the new mapped object.
+   * @see _.mapKeys
+   * @example
+   *
+   * var users = {
+   *   'fred':    { 'user': 'fred',    'age': 40 },
+   *   'pebbles': { 'user': 'pebbles', 'age': 1 }
+   * };
+   *
+   * _.mapValues(users, function(o) { return o.age; });
+   * // => { 'fred': 40, 'pebbles': 1 } (iteration order is not guaranteed)
+   *
+   * // The `_.property` iteratee shorthand.
+   * _.mapValues(users, 'age');
+   * // => { 'fred': 40, 'pebbles': 1 } (iteration order is not guaranteed)
+   */
+  function mapValues(object, iteratee) {
+    var result = {};
+    iteratee = baseIteratee(iteratee, 3);
+
+    baseForOwn(object, function(value, key, object) {
+      baseAssignValue(result, key, iteratee(value, key, object));
+    });
+    return result;
+  }
+
+  /**
    * Creates an object composed of the picked `object` properties.
    *
    * @static
@@ -7548,6 +7788,49 @@
   }
 
   /**
+   * Creates an array of numbers (positive and/or negative) progressing from
+   * `start` up to, but not including, `end`. A step of `-1` is used if a negative
+   * `start` is specified without an `end` or `step`. If `end` is not specified,
+   * it's set to `start` with `start` then set to `0`.
+   *
+   * **Note:** JavaScript follows the IEEE-754 standard for resolving
+   * floating-point values which can produce unexpected results.
+   *
+   * @static
+   * @since 0.1.0
+   * @memberOf _
+   * @category Util
+   * @param {number} [start=0] The start of the range.
+   * @param {number} end The end of the range.
+   * @param {number} [step=1] The value to increment or decrement by.
+   * @returns {Array} Returns the range of numbers.
+   * @see _.inRange, _.rangeRight
+   * @example
+   *
+   * _.range(4);
+   * // => [0, 1, 2, 3]
+   *
+   * _.range(-4);
+   * // => [0, -1, -2, -3]
+   *
+   * _.range(1, 5);
+   * // => [1, 2, 3, 4]
+   *
+   * _.range(0, 20, 5);
+   * // => [0, 5, 10, 15]
+   *
+   * _.range(0, -4, -1);
+   * // => [0, -1, -2, -3]
+   *
+   * _.range(1, 4, 0);
+   * // => [1, 1, 1]
+   *
+   * _.range(0);
+   * // => []
+   */
+  var range = createRange();
+
+  /**
    * This method returns a new empty array.
    *
    * @static
@@ -7677,16 +7960,20 @@
   lodash.iteratee = iteratee;
   lodash.keys = keys;
   lodash.map = map;
+  lodash.mapValues = mapValues;
   lodash.matches = matches;
   lodash.mixin = mixin;
   lodash.negate = negate;
   lodash.once = once;
+  lodash.partial = partial;
   lodash.pick = pick;
+  lodash.range = range;
   lodash.slice = slice;
   lodash.sortBy = sortBy;
   lodash.tap = tap;
   lodash.thru = thru;
   lodash.toArray = toArray;
+  lodash.uniq = uniq;
   lodash.values = values;
 
   // Add aliases.

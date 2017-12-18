@@ -4,7 +4,7 @@
  * @author : sunkeysun
  */
 
-import lodash from '@vendor/lodash/lodash.custom'
+import lodash from 'lodash'
 import CoreApp from 'koa'
 
 import IException from '../Support/Base/IException'

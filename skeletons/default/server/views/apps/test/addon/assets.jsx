@@ -1,6 +1,6 @@
 export const jsList = [
     
-    '//img.test.com/test.js',
+    '//img.test.com/index.js',
     
 ]
 
