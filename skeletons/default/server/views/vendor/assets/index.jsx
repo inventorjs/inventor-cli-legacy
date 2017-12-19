@@ -1,6 +1,6 @@
 export const jsList = [
     
-    '//img.test.com//Users/sunkeysun/Projects/Github/inventor-cli/skeletons/default/build/web/debug/vendor/index.js',
+    'http://127.0.0.1:8000/scripts/vendor/vendor.js',
     
 ]
 

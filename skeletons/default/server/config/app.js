@@ -5,6 +5,7 @@
  */
 
 export default {
+    ssr: false,
     keys: [ '123456' ],
     server: {
         host: '127.0.0.1',

@@ -15,6 +15,7 @@ export default function(props={}) {
         appName='',
         appContent='',
         viewsPath='',
+        ssr=false,
     } = props
 
     const { jsList: vendorJsList=[], cssList: vendorCssList=[] } = require(`${viewsPath}vendor`)
@@ -35,12 +36,13 @@ export default function(props={}) {
                 <meta httpEquiv="description" content={ description } />
                 <title>{ title }</title>
                 {
-                    _.map(realCssList, (link) =>
-                        <link href={ link } rel="stylesheet" media="screen" />
+                    _.map(realCssList, (link, index) =>
+                        <link key={ index } href={ link } rel="stylesheet" media="screen" />
                     )
                 }
                 <script dangerouslySetInnerHTML={ {
                     __html: `
+                        window.__SSR__ = ${ssr}
                         window.__INITIAL_STATE__ = ${jsonInitialState}
                         window.__APP_NAME__ = '${appName}'
                     `

@@ -7,7 +7,6 @@
                 "@server": "./server",
                 "@shared": "./shared",
                 "@vendor": "./vendor",
-                "lodash": "./vendor/lodash/lodash.custom"
             }
         }],
 	   "transform-decorators-legacy"

@@ -85,10 +85,16 @@ export default class Response extends IClass {
     }
 
     _render({ App, appName='', initialState={}, rootReducer=()=>{}, rootSaga={} }) {
-        const RootComponent = createRoot({ App, rootReducer, rootSaga })
-        const appContent = renderToString(<RootComponent { ...initialState } />)
+        const appConfig = app().config('app')
+        let appContent = ''
+
+        if (!!appConfig.ssr) {
+            const RootComponent = createRoot({ App, rootReducer, rootSaga })
+            appContent = renderToString(<RootComponent { ...initialState } />)
+        }
 
         const props = {
+            ssr: appConfig.ssr,
             title: _.get(this.locals, 'PAGE_TITLE', ''),
             keywords: _.get(this.locals, 'PAGE_KEYWORDS', ''),
             description: _.get(this.locals, 'PAGE_DESCRIPTION', ''),

@@ -1,3 +1,8 @@
-import WebpackConfigure from '../framework/Web/webpack/WebpackConfigure'
+import Configure from '../framework/Web/webpack/Configure'
+import DevServer from '../framework/Web/webpack/DevServer'
 
-export default WebpackConfigure
+export default Configure
+
+export {
+    DevServer,
+}
