@@ -7,6 +7,8 @@
                 "@server": "./server",
                 "@shared": "./shared",
                 "@vendor": "./vendor",
+                "@controllers": "./server/app/Http/Controllers",
+                "@models": "./server/app/Models",
             }
         }],
 	   "transform-decorators-legacy"

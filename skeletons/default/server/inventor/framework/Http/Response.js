@@ -115,6 +115,6 @@ export default class Response extends IClass {
         const rootReducer = require(`${appPath}reducers`).default
         const rootSaga = require(`${appPath}sagas`).default
 
-        return this._render({ App, appName, rootReducer, rootSaga })
+        return this._render({ App, appName, initialState, rootReducer, rootSaga })
     }
 }

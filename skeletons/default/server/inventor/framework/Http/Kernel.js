@@ -26,6 +26,8 @@ export default class Kernel {
 
     _appConfig = {}
 
+    middlewareMap = {}
+
     constructor(basePath) {
         this._basePath = basePath
 

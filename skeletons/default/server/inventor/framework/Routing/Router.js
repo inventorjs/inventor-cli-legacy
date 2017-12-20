@@ -67,24 +67,36 @@ export default class Router extends IClass {
         return this._coreRouter.routes()
     }
 
-    _handle(method, routePath, handler, { middleware }={}) {
+    _getMiddlewareHandlers(middleware=[]) {
+        const middlewareHandlers = _.map(middleware, (middlewareKey) => {
+            const middlewareClass = app().middlewareMap[middlewareKey]
+            if (!middlewareClass) {
+                throw new IException(`Middleware ${middlewareKey} not defined`)
+            }
+            const middlewareInstance = new middlewareClass()
+            return middlewareInstance.handle.bind(middlewareInstance)
+        })
+
+        return middlewareHandlers
+    }
+
+    _handle(method, routePath, handler, { middleware }=[]) {
         const preRoutePath = _.get(this, 'routePath', '')
         routePath = path.normalize(`${preRoutePath}${routePath}`)
 
         const route = new Route(handler)
 
-        let args = [ routePath ]
-        if (!!_.get(middleware, 'length')) {
-            args = args.concat(middleware)
-        }
+        let routeArgs = [ routePath ]
+        const middlewareHandlers = this._getMiddlewareHandlers(middleware)
+        routeArgs = routeArgs.concat(middlewareHandlers)
 
         const routeHandler = (ctx, next) => {
             return route.handle(ctx, next)
         }
 
-        args.push(routeHandler)
+        routeArgs.push(routeHandler)
 
-        this._coreRouter[method].apply(this._coreRouter, args)
+        this._coreRouter[method].apply(this._coreRouter, routeArgs)
 
         return this
     }
