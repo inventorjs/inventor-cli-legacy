@@ -1,5 +1,5 @@
-import Configure from '../framework/Web/webpack/Configure'
-import DevServer from '../framework/Web/webpack/DevServer'
+import Configure from '../framework/web/webpack/Configure'
+import DevServer from '../framework/web/webpack/DevServer'
 
 export default Configure
 

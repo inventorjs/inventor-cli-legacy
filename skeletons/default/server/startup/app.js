@@ -5,7 +5,7 @@
  */
 
 import path from 'path'
-import Kernel from '@server/app/Http/Kernel'
+import Kernel from '@server/app/http/Kernel'
 
 const app = new Kernel(path.join(__dirname, '../../'))
 app.run()

@@ -4,12 +4,12 @@
  * @author : sunkeysun
  */
 
-import HttpKernel from './framework/Http/Kernel'
+import HttpKernel from './framework/http/Kernel'
 
-import Controller from './framework/Http/Controller'
-import Provider from './framework/Support/Base/Provider'
-import Model from './framework/Support/Base/Model'
-import Middleware from './framework/Support/Base/Middleware'
+import Controller from './framework/http/Controller'
+import Provider from './framework/support/base/Provider'
+import Model from './framework/support/base/Model'
+import Middleware from './framework/support/base/Middleware'
 
 export default HttpKernel
 
