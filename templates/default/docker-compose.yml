@@ -1,0 +1,103 @@
+version: '3'
+services:
+    project:
+        image: "${IMAGE_NAME}:${IMAGE_TAG}"
+        working_dir: ${DIANSHI_VOLUME}
+        network_mode: host
+        restart: on-failure
+        volumes:
+            - ${PWD}:${DIANSHI_VOLUME}
+            - ${LOG_PATH}:${LOG_VOLUME}
+            - ${TMP_PATH}:${TMP_VOLUME}
+        environment:
+            - NODE_ENV=${DEPLOY_ENV}
+            - SERVER_PORT=${SERVER_PORT}
+        command: sh -c "node build/server/startup/app.js >> ${LOG_VOLUME}/<-project->-error.log 2>&1"
+    node:
+        image: "${IMAGE_NAME}:${IMAGE_TAG}"
+        working_dir: ${DIANSHI_VOLUME}
+        network_mode: host
+        build:
+            context: .
+            dockerfile: Dockerfile
+        volumes:
+            - ${PWD}:${DIANSHI_VOLUME}
+    local-server:
+        image: "${IMAGE_NAME}:${IMAGE_TAG}"
+        build:
+            context: .
+            dockerfile: Dockerfile
+        working_dir: ${DIANSHI_VOLUME}
+        network_mode: bridge
+        volumes:
+            - ${PWD}:${DIANSHI_VOLUME}
+        ports:
+            - ${LOCAL_SERVER_PORT}:${LOCAL_SERVER_PORT}
+        environment:
+            - NODE_ENV=local
+            - BABEL_DISABLE_CACHE=1
+            - BABEL_ENV=server
+            - SERVER_PORT=${LOCAL_SERVER_PORT}
+        command: sh -c "nodemon -e js,jsx,scss --delay 300ms --exec babel-node server/startup/app.js"
+    local-web:
+        image: "${IMAGE_NAME}:${IMAGE_TAG}"
+        build:
+            context: .
+            dockerfile: Dockerfile
+        working_dir: ${DIANSHI_VOLUME}
+        network_mode: bridge
+        volumes:
+            - ${PWD}:${DIANSHI_VOLUME}
+        ports:
+            - ${LOCAL_WEB_PORT}:${LOCAL_WEB_PORT}
+        environment:
+            - NODE_ENV=local
+            - BABEL_ENV=web
+            - LOCAL_SERVER_PORT=${LOCAL_SERVER_PORT}
+            - LOCAL_WEB_PORT=${LOCAL_WEB_PORT}
+        command: sh -c "babel-node webpack/devServer.js"
+    local-node:
+        image: "${IMAGE_NAME}:${IMAGE_TAG}"
+        working_dir: ${DIANSHI_VOLUME}
+        network_mode: bridge
+        build:
+            context: .
+            dockerfile: Dockerfile
+        volumes:
+            - ${PWD}:${DIANSHI_VOLUME}
+    build-web:
+        image: "${IMAGE_NAME}:${IMAGE_TAG}"
+        working_dir: ${DIANSHI_VOLUME}
+        build:
+            context: .
+            dockerfile: Dockerfile
+        volumes:
+            - ${PWD}:${DIANSHI_VOLUME}
+        environment:
+            - NODE_ENV=production
+            - BABEL_ENV=web
+        command: sh -c "webpack --config webpack/webpack.config.babel.js && BABEL_ENV=server babel shared -d build/shared -D"
+    build-server:
+        image: "${IMAGE_NAME}:${IMAGE_TAG}"
+        working_dir: ${DIANSHI_VOLUME}
+        build:
+            context: .
+            dockerfile: Dockerfile
+        volumes:
+            - ${PWD}:${DIANSHI_VOLUME}
+        environment:
+            - NODE_ENV=production
+            - BABEL_ENV=server
+        command: sh -c "babel server -d build/server -D"
+    build-webpack:
+        image: "${IMAGE_NAME}:${IMAGE_TAG}"
+        working_dir: ${DIANSHI_VOLUME}
+        build:
+            context: .
+            dockerfile: Dockerfile
+        volumes:
+            - ${PWD}:${DIANSHI_VOLUME}
+        environment:
+            - NODE_ENV=production
+            - BABEL_ENV=server
+        command: sh -c "babel webpack -d build/webpack -D"
