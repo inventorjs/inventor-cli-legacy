@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev-web": "BABEL_ENV=web babel-node webpack/devServer.js",
-    "dev-server": "nodemon -e js,jsx,scss --delay 300ms --exec NODE_ENV=local BABEL_DISABLE_CACHE=1 BABEL_ENV=server babel-node server/startup/app.js",
+    "dev-server": "nodemon -e js,jsx,scss --exec NODE_ENV=local BABEL_DISABLE_CACHE=1 BABEL_ENV=server babel-node server/startup/app.js",
     "build-web": "NODE_ENV=production BABEL_ENV=web webpack-cli --config webpack/webpack.config.js && npm run _build-shared",
     "build-server": "NODE_ENV=production BABEL_ENV=server babel server -d build/server -D",
     "build-webpack": "NODE_ENV=production BABEL_ENV=server babel webpack -d build/webpack -D",
@@ -21,6 +21,6 @@
     "inventor": "0.0.47"
   },
   "devDependencies": {
-    "inventor-dev": "0.0.12"
+    "inventor-dev": "0.0.13"
   }
 }

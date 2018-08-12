@@ -5,14 +5,14 @@
             "plugins": [
                 ["module-resolver", {
                     "alias": {
-                        "$server": "./server",
-                        "$shared": "./shared",
-                        "$vendor": "./vendor",
-                        "$controllers": "./server/app/http/controllers",
-                        "$models": "./server/app/models",
-                        "$services": "./server/app/services",
-                        "$middlewares": "./server/app/http/middlewares",
-                        "$webpack": "./webpack",
+                        "#server": "./server",
+                        "#shared": "./shared",
+                        "#vendor": "./vendor",
+                        "#controllers": "./server/app/http/controllers",
+                        "#models": "./server/app/models",
+                        "#services": "./server/app/services",
+                        "#middlewares": "./server/app/http/middlewares",
+                        "#webpack": "./webpack",
                     }
                 }],
                "transform-decorators-legacy",
@@ -31,9 +31,9 @@
             "plugins": [
                 ["module-resolver", {
                     "alias": {
-                        "$webpack": "./webpack",
-                        "$shared": "./shared",
-                        "$web": "./web",
+                        "#webpack": "./webpack",
+                        "#shared": "./shared",
+                        "#web": "./web"
                     }
                 }],
                "transform-decorators-legacy",

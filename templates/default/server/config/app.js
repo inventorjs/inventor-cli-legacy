@@ -4,7 +4,7 @@
  * @author : sunkeysun
  */
 
-import webpackConfig from '$webpack/config'
+import webpackConfig from '#webpack/config'
 
 const localWeb = webpackConfig.debug.localWeb
 

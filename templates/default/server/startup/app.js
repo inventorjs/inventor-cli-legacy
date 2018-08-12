@@ -1,11 +1,11 @@
 /**
  * 启动脚本
  *
- * $author : sunkeysun
+ * @author : sunkeysun
  */
 
 import path from 'path'
-import Kernel from '$server/app/http/Kernel'
+import Kernel from '#server/app/http/Kernel'
 
 process.on('uncaughtException', (e) => {
     console.error(e)
