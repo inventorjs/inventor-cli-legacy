@@ -4,7 +4,7 @@
  * @author : sunkeysun
  */
 
-export const dianshi = {
+export const db = {
     driver: null,
 
     host: '127.0.0.1',
