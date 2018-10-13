@@ -1,0 +1,18 @@
+.shared-app-common-styles-index__errorWrapper {
+    font-size: 30px;
+    color: #999;
+    padding: 30px 50px;
+    text-align: center;
+    width: 600px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+    background-color: #fff;
+    border: 1px solid #ccc;
+}
+
+.shared-app-common-styles-index__errorDetail {
+    font-size: 16px;
+}

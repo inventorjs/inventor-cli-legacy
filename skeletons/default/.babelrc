@@ -1,0 +1,49 @@
+{
+    "env": {
+        "server": {
+            "presets": ["react", "env", "stage-0"],
+            "plugins": [
+                ["module-resolver", {
+                    "alias": {
+                        "#server": "./server",
+                        "#shared": "./shared",
+                        "#vendor": "./vendor",
+                        "#controllers": "./server/app/http/controllers",
+                        "#models": "./server/app/models",
+                        "#services": "./server/app/services",
+                        "#middlewares": "./server/app/http/middlewares",
+                        "#webpack": "./webpack",
+                        "inventor": "../../../inventor/src",
+                    }
+                }],
+               "transform-decorators-legacy",
+               "dynamic-import-node",
+               ["transform-runtime", {
+                    "polyfill": false,
+                    "regenerator": true
+               }],
+               ["css-modules-transform", {
+                    "generateScopedName": "[name]__[local]",
+                    "extensions": [".css"]
+               }]
+            ]
+        },
+        "web": {
+            "presets": ["react", "env", "stage-0"],
+            "plugins": [
+                ["module-resolver", {
+                    "alias": {
+                        "#webpack": "./webpack",
+                        "#web": "./web",
+                    	"inventor/web": "../../../inventor/src/web",
+                    }
+                }],
+               "transform-decorators-legacy",
+               ["transform-runtime", {
+                    "polyfill": false,
+                    "regenerator": true
+               }]
+            ]
+        }
+    }
+}
