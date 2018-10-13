@@ -21,5 +21,5 @@ fi
 if [ $? -eq 0 ]; then
     printf "$cur_md5" > "$md5_file"
 
-    pm2 startOrReload "$base_path/server/startup/app.js"
+    pm2 startOrGracefulReload --only $project_name
 fi

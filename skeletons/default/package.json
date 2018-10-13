@@ -5,12 +5,11 @@
   "main": "index.js",
   "scripts": {
     "dev-web": "BABEL_ENV=web babel-node webpack/devServer.js",
-    "dev-server": "nodemon -e js,jsx,scss --exec NODE_ENV=local BABEL_DISABLE_CACHE=1 BABEL_ENV=server babel-node server/startup/app.js",
+    "dev-server": "pm2-runtime start ecosystem.config.js --only project-local",
     "build-web": "bash bin/build-web.sh",
     "build-server": "NODE_ENV=production BABEL_ENV=server babel server -d build/server -D",
     "build-webpack": "NODE_ENV=production BABEL_ENV=server babel webpack -d build/webpack -D",
-    "build-all": "npm run build-web && npm run build-server && npm run build-webpack",
-    "_build-shared": "NODE_ENV=production BABEL_ENV=server babel shared -d build/shared -D"
+    "build-all": "npm run build-web && npm run build-server && npm run build-webpack"
   },
   "repository": {
     "type": "git",
@@ -18,16 +17,11 @@
   },
   "author": "sunkeysun",
   "dependencies": {
-    "inventor": "0.0.47",
-    "js-base64": "^2.4.9",
-    "mobx": "^5.5.0",
-    "mobx-react": "^5.2.8",
-    "mobx-react-router": "^4.0.5"
+    "inventor": "0.0.47"
   },
   "devDependencies": {
-    "babel-plugin-dynamic-import-node": "^2.1.0",
-    "expose-loader": "^0.7.5",
+    "babel-cli": "^6.26.0",
     "inventor-dev": "0.0.16",
-    "md5": "^2.2.1"
+    "pm2": "^3.2.2"
   }
 }

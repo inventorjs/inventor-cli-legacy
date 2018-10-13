@@ -21,7 +21,7 @@ export default class Com extends Component {
         console.log(this.props)
         return (
             <Fragment>
-                <div onClick={ this.handleClick.bind(this) }>coxxxon</div>
+                <div onClick={ this.handleClick.bind(this) }>co3xx</div>
                 { renderRoutes(this.props.route.routes) }
             </Fragment>
         )

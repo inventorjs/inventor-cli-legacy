@@ -32,12 +32,12 @@ services:
         volumes:
             - ${PWD}:${PROJECT_VOLUME}
         ports:
-            - ${LOCAL_SERVER_PORT}:${LOCAL_SERVER_PORT}
+            - ${SERVER_PORT}:${SERVER_PORT}
         environment:
             - NODE_ENV=local
             - BABEL_DISABLE_CACHE=1
             - BABEL_ENV=server
-            - SERVER_PORT=${LOCAL_SERVER_PORT}
+            - SERVER_PORT=${SERVER_PORT}
         command: sh -c "nodemon -e js,jsx,scss --delay 300ms --exec babel-node server/startup/app.js"
     local-web:
         image: "${IMAGE_NAME}:${IMAGE_TAG}"
@@ -49,12 +49,12 @@ services:
         volumes:
             - ${PWD}:${PROJECT_VOLUME}
         ports:
-            - ${LOCAL_WEB_PORT}:${LOCAL_WEB_PORT}
+            - ${WEB_PORT}:${WEB_PORT}
         environment:
             - NODE_ENV=local
             - BABEL_ENV=web
-            - LOCAL_SERVER_PORT=${LOCAL_SERVER_PORT}
-            - LOCAL_WEB_PORT=${LOCAL_WEB_PORT}
+            - SERVER_PORT=${SERVER_PORT}
+            - WEB_PORT=${WEB_PORT}
         command: sh -c "babel-node webpack/devServer.js"
     local-node:
         image: "${IMAGE_NAME}:${IMAGE_TAG}"

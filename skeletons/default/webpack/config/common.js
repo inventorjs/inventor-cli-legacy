@@ -6,21 +6,21 @@
 
 import _ from 'lodash'
 
-const LOCAL_WEB_PORT = _.get(process.env, 'LOCAL_WEB_PORT', 9099)
-const LOCAL_SERVER_PORT = _.get(process.env, 'LOCAL_SERVER_PORT', 9199)
-const LOCAL_HOST = '127.0.0.1'
+const WEB_PORT = _.get(process.env, 'WEB_PORT', 9099)
+const SERVER_PORT = _.get(process.env, 'SERVER_PORT', 9199)
+const LOCALHOST = _.get(process.env, 'LOCALHOST', '127.0.0.1')
 
 export default {
     debug: {
         localWeb: {
-            host: LOCAL_HOST,
-            port: LOCAL_WEB_PORT,
+            host: LOCALHOST,
+            port: WEB_PORT,
         },
         localServer: {
-            host: LOCAL_HOST,
-            port: LOCAL_SERVER_PORT,
+            host: LOCALHOST,
+            port: SERVER_PORT,
         },
-        publicPath: `http://${LOCAL_HOST}:${LOCAL_WEB_PORT}/static`,
+        publicPath: `http://${LOCALHOST}:${WEB_PORT}/static`,
     },
     release: {
         publicPath: '/static',
