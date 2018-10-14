@@ -8,9 +8,6 @@ module.exports={
 'React': require('react'),
 'ReactDOM': require('react-dom'),
 '_': require('lodash'),
-'Redux': require('redux'),
-'ReactRedux': require('react-redux'),
-'InventorWeb': require('inventor/shared'),
-'InventorShared': require('inventor/shared'),
-'ReactHotLoader': require('react-hot-loader')
+'InventorWeb': require('inventor/web'),
+'InventorShared': require('inventor/shared')
 }

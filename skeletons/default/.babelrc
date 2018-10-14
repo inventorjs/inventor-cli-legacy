@@ -16,7 +16,6 @@
                     }
                 }],
                "transform-decorators-legacy",
-               "dynamic-import-node",
                ["transform-runtime", {
                     "polyfill": false,
                     "regenerator": true

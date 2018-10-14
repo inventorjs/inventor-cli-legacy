@@ -1,3 +1,9 @@
 export default {
-    app: {},
+    request: {
+        requestId: true,
+        log: false,
+        config: {
+            timeout: 10000,
+        },
+    }
 }

@@ -7,7 +7,6 @@ export default class Store {
 
     init(stateName) {
         if (!!stateName && this[stateName]) {
-            this[stateName] = new
         }
     }
 }

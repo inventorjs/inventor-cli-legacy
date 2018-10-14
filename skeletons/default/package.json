@@ -17,11 +17,11 @@
   },
   "author": "sunkeysun",
   "dependencies": {
-    "inventor": "0.0.47"
+    "inventor": "0.0.52"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
-    "inventor-dev": "0.0.16",
+    "inventor-dev": "0.0.19",
     "pm2": "^3.2.2"
   }
 }

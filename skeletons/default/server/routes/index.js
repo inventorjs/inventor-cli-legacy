@@ -5,5 +5,6 @@
  */
 
 export default (router) => {
+    router.get('/api', 'index/Index@api')
     router.get('*', 'index/Index@index')
 }
