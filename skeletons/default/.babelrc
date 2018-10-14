@@ -13,7 +13,6 @@
                         "#services": "./server/app/services",
                         "#middlewares": "./server/app/http/middlewares",
                         "#webpack": "./webpack",
-                        "inventor": "../../../inventor/src",
                     }
                 }],
                "transform-decorators-legacy",
@@ -35,7 +34,6 @@
                     "alias": {
                         "#webpack": "./webpack",
                         "#web": "./web",
-                    	"inventor/web": "../../../inventor/src/web",
                     }
                 }],
                "transform-decorators-legacy",
