@@ -1,6 +1,6 @@
 export const jsList = [
     
-    '/static/vendor/vendor.c18ce2b7f5fa5982dddd.js',
+    '/static/vendor/vendor.434d32d4e62c08a9e5be.js',
     
 ]
 

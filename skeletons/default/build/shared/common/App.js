@@ -33,6 +33,8 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactHotLoader = require('react-hot-loader');
 
+var _reactRouterConfig = require('react-router-config');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var Com = (_dec = (0, _reactHotLoader.hot)(module), _dec(_class = function (_Component) {
@@ -44,6 +46,11 @@ var Com = (_dec = (0, _reactHotLoader.hot)(module), _dec(_class = function (_Com
     }
 
     (0, _createClass3.default)(Com, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            console.log('mount');
+        }
+    }, {
         key: 'handleClick',
         value: function handleClick() {
             alert('xxxo');
@@ -51,10 +58,16 @@ var Com = (_dec = (0, _reactHotLoader.hot)(module), _dec(_class = function (_Com
     }, {
         key: 'render',
         value: function render() {
+            console.log(this.props);
             return _react2.default.createElement(
-                'div',
-                { onClick: this.handleClick.bind(this) },
-                'coxxxon'
+                _react.Fragment,
+                null,
+                _react2.default.createElement(
+                    'div',
+                    { onClick: this.handleClick.bind(this) },
+                    'co3xx'
+                ),
+                (0, _reactRouterConfig.renderRoutes)(this.props.route.routes)
             );
         }
     }]);

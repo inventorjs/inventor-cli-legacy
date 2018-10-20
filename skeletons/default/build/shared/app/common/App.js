@@ -21,6 +21,12 @@ var _inherits2 = require('babel-runtime/helpers/inherits');
 
 var _inherits3 = _interopRequireDefault(_inherits2);
 
+var _dec, _class; /**
+                   * 应用入口
+                   *
+                   * $author : sunkeysun
+                   */
+
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
@@ -33,15 +39,9 @@ var _Error2 = _interopRequireDefault(_Error);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-$connect(function (state) {
+var _default = (_dec = (0, _reactRedux.connect)(function (state) {
     return state;
-}); /**
-     * 应用入口
-     *
-     * $author : sunkeysun
-     */
-
-var _default = function (_Component) {
+}), _dec(_class = function (_Component) {
     (0, _inherits3.default)(_default, _Component);
 
     function _default() {
@@ -63,6 +63,6 @@ var _default = function (_Component) {
         }
     }]);
     return _default;
-}(_react.Component);
+}(_react.Component)) || _class);
 
 exports.default = _default;

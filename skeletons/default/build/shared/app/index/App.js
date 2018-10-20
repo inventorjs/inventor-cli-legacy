@@ -21,21 +21,23 @@ var _inherits2 = require('babel-runtime/helpers/inherits');
 
 var _inherits3 = _interopRequireDefault(_inherits2);
 
-var _dec, _class; /**
-                   * 应用入口
-                   *
-                   * @author : sunkeysun
-                   */
+var _dec, _dec2, _class; /**
+                          * 应用入口
+                          *
+                          * @author : sunkeysun
+                          */
 
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
+var _mobxReact = require('mobx-react');
+
 var _reactHotLoader = require('react-hot-loader');
 
-var _text = require('./text');
+var _reactRouterDom = require('react-router-dom');
 
-var _text2 = _interopRequireDefault(_text);
+var _reactRouterConfig = require('react-router-config');
 
 var _common = require('../../common');
 
@@ -43,7 +45,24 @@ var _common2 = _interopRequireDefault(_common);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var App = (_dec = (0, _reactHotLoader.hot)(module), _dec(_class = function (_Component) {
+var routes = [{
+    path: '/',
+    exact: true,
+    component: _common2.default
+}, {
+    path: '/about',
+    exact: true,
+    component: function component(props) {
+        console.log(props);
+        return _react2.default.createElement(
+            'div',
+            null,
+            'about'
+        );
+    }
+}];
+
+var App = (_dec = (0, _reactHotLoader.hot)(module), _dec2 = (0, _mobxReact.inject)('store'), _dec(_class = _dec2(_class = (0, _mobxReact.observer)(_class = function (_Component) {
     (0, _inherits3.default)(App, _Component);
 
     function App() {
@@ -55,6 +74,14 @@ var App = (_dec = (0, _reactHotLoader.hot)(module), _dec(_class = function (_Com
         key: 'handleClick',
         value: function handleClick() {
             alert(1);
+        }
+    }, {
+        key: 'componentWillMount',
+        value: function componentWillMount() {}
+    }, {
+        key: 'handlePlus',
+        value: function handlePlus() {
+            this.props.store.common.addName('x');
         }
     }, {
         key: 'render',
@@ -76,12 +103,34 @@ var App = (_dec = (0, _reactHotLoader.hot)(module), _dec(_class = function (_Com
             };
             return _react2.default.createElement(
                 'div',
-                { style: style, onClick: this.handleClick.bind(this) },
-                'Welcome, Ientor!',
-                _react2.default.createElement(_common2.default, null)
+                { style: style },
+                (0, _reactRouterConfig.renderRoutes)(routes),
+                _react2.default.createElement(
+                    _reactRouterDom.Link,
+                    { to: '/about' },
+                    'about'
+                ),
+                _react2.default.createElement(
+                    _reactRouterDom.Link,
+                    { to: {
+                            pathname: '/?a=1',
+                            state: { isLink: true }
+                        } },
+                    'index'
+                ),
+                _react2.default.createElement(
+                    'div',
+                    null,
+                    this.props.store.common.staffname
+                ),
+                _react2.default.createElement(
+                    'button',
+                    { onClick: this.handlePlus.bind(this) },
+                    '\u52A0'
+                )
             );
         }
     }]);
     return App;
-}(_react.Component)) || _class);
+}(_react.Component)) || _class) || _class) || _class);
 exports.default = App;

@@ -3,6 +3,6 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-var jsList = exports.jsList = ['/static/apps/common/index.002b8509e50331027deb.js'];
+var jsList = exports.jsList = ['/static/app/common/index.584472d3b89ab046ee5f.js'];
 
-var cssList = exports.cssList = ['/static/apps/common/index.26be1571f9287d27f423.css'];
+var cssList = exports.cssList = ['/static/app/common/index.6f20d39b08e820cb49e8.css'];

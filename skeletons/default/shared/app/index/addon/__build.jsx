@@ -1,6 +1,6 @@
 export const jsList = [
     
-    '/static/app/index/index.7219f1e7aa59205eda76.js',
+    '/static/app/index/index.85d65a0d0b3ed569fbc9.js',
     
 ]
 

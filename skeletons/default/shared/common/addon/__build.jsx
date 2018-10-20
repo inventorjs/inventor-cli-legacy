@@ -1,6 +1,6 @@
 export const jsList = [
     
-    '/static/common/common.2b8f8ad162ae5eca117a.js',
+    '/static/common/common.bbef7192211e997a051b.js',
     
 ]
 
